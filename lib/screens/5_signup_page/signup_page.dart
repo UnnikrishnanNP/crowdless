@@ -48,8 +48,11 @@ class _SignUpPageState extends State<SignUpPage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              SizedBox(
+                height: size.height * 0.025,
+              ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: const EdgeInsets.only(left: 20.0),
                 child: Text(
                   'Sign Up',
                   style: Theme.of(context)
@@ -62,9 +65,9 @@ class _SignUpPageState extends State<SignUpPage> {
                 height: size.height * 0.00125,
               ),
               Padding(
-                padding: const EdgeInsets.only(left: 8.0),
+                padding: const EdgeInsets.only(left: 20.0),
                 child: Text(
-                  'Lets Get Started',
+                  'Let\'s Get Started',
                   style: Theme.of(context)
                       .textTheme
                       .headline6
