@@ -1,5 +1,5 @@
 import 'package:crowdless/constants/colors.dart';
-import 'package:crowdless/widgets/custom_card.dart';
+import 'package:crowdless/widgets/other_widgets/custom_card.dart';
 import 'package:flutter/material.dart';
 import '../../../router/app_router.dart' as route;
 
@@ -74,14 +74,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                     CustomCard(
                       title: 'View Visits',
                       description: 'You visited 1 place',
-                    ),
-                    CustomCard(
-                      title: 'Crowd Mangament',
-                      description: 'View Crowd at your location',
-                    ),
-                    CustomCard(
-                      title: 'Crowd Mangament',
-                      description: 'View Crowd at your location',
                     ),
                     CustomCard(
                       title: 'Crowd Mangament',

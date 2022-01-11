@@ -1,8 +1,8 @@
 // ignore_for_file: unused_local_variable
 
 import 'package:crowdless/constants/colors.dart';
-import 'package:crowdless/widgets/rounded_button.dart';
-import 'package:crowdless/widgets/rounded_inputfield.dart';
+import 'package:crowdless/widgets/credentials_widgets/rounded_button.dart';
+import 'package:crowdless/widgets/credentials_widgets/rounded_inputfield.dart';
 import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatelessWidget {
