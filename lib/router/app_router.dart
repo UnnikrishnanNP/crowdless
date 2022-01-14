@@ -7,6 +7,7 @@ import 'package:crowdless/screens/customer_screens/1_home_screen/customer_homesc
 import 'package:crowdless/screens/customer_screens/2_scan_qr/scan_qr.dart';
 import 'package:crowdless/screens/customer_screens/3_view_visits/view_visits.dart';
 import 'package:crowdless/screens/merchant_screens/1_merchant_homescreen/merchant_homescreen.dart';
+import 'package:crowdless/screens/merchant_screens/2/generate_qr.dart';
 
 import 'package:flutter/material.dart';
 
@@ -20,6 +21,7 @@ const String customerHomePage = 'customerHomePage';
 const String merchantHomePage = 'merchantHomePage';
 const String scanQRPage = 'scanQRPage';
 const String viewVists = 'viewVisits';
+const String generateQR = 'genearteQR';
 
 // control route page flow
 Route<dynamic> controller(RouteSettings settings) {
@@ -51,6 +53,9 @@ Route<dynamic> controller(RouteSettings settings) {
 
     case viewVists:
       return MaterialPageRoute(builder: (context) => const ViewVists());
+
+    case generateQR:
+      return MaterialPageRoute(builder: (context) => const GenerateQRPage());
 
     default:
       throw ('This page doesnot exist');

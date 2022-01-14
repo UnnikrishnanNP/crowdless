@@ -23,9 +23,9 @@ class _BackgroundMainState extends State<BackgroundMain> {
         elevation: 0,
         backgroundColor: primaryLightColor.withOpacity(0),
         leading: ClipRRect(
-          borderRadius: BorderRadius.circular(25.0),
-          child: Image.network(
-            'https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Ftse3.mm.bing.net%2Fth%3Fid%3DOIP.v6whqX6ijqrdaGRsvXQzHAHaEK%26pid%3DApi&f=1',
+          borderRadius: BorderRadius.circular(20.0),
+          child: Image.asset(
+            'assets/images/logo_appbar.png',
             width: size.width * 0.01,
             height: size.height * 0.01,
             fit: BoxFit.fill,
