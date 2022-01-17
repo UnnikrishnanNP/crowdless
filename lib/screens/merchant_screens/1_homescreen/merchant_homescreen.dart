@@ -1,22 +1,20 @@
 import 'package:crowdless/constants/colors.dart';
+import 'package:crowdless/widgets/other_widgets/custom_card.dart';
+import '../../../router/app_router.dart' as route;
+import 'package:flutter/material.dart';
 import 'package:crowdless/widgets/other_widgets/background.dart';
 
-import 'package:crowdless/widgets/other_widgets/custom_card.dart';
-import 'package:flutter/material.dart';
-import '../../../router/app_router.dart' as route;
-
-class CustomerHomeScreen extends StatefulWidget {
-  const CustomerHomeScreen({Key? key}) : super(key: key);
+class MercantHomeScreen extends StatefulWidget {
+  const MercantHomeScreen({Key? key}) : super(key: key);
 
   @override
-  _CustomerHomeScreenState createState() => _CustomerHomeScreenState();
+  _MercantHomeScreenState createState() => _MercantHomeScreenState();
 }
 
-class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
+class _MercantHomeScreenState extends State<MercantHomeScreen> {
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
-
     return BackgroundMain(
       child: SingleChildScrollView(
         child: Column(
@@ -30,7 +28,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
               child: Padding(
                 padding: EdgeInsets.all(size.width * 0.05),
                 child: Text(
-                  'Hi <--Name-->👋🏼',
+                  'Welcome Back👋🏼',
                   style: Theme.of(context)
                       .textTheme
                       .headline4
@@ -46,22 +44,22 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                 children: <Widget>[
                   CustomCard(
                     icon: Icons.qr_code_scanner,
-                    title: 'Scan QR',
-                    description: 'Scan before you enter',
+                    title: 'Generate QR',
+                    description: 'Create QR Code for your shop',
                     titleColor: Colors.black,
                     descColor: Colors.black,
                     onTap: () {
-                      Navigator.pushNamed(context, route.scanQRPage);
+                      Navigator.pushNamed(context, route.generateQR);
                     },
                   ),
                   CustomCard(
                     icon: Icons.folder_open,
-                    title: 'View Visits',
-                    description: 'You visited 1 place',
+                    title: 'View Visitors',
+                    description: 'You have 10 visitors',
                     titleColor: Colors.black,
                     descColor: Colors.black,
                     onTap: () {
-                      Navigator.pushNamed(context, route.viewVists);
+                      Navigator.pushNamed(context, route.viewVisitors);
                     },
                   ),
                   CustomCard(
@@ -72,7 +70,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                     descColor: Colors.black,
                     onTap: () {
                       Navigator.pushNamed(
-                          context, route.crowdManagmentCustomer);
+                          context, route.crowdManagmentMerchant);
                     },
                   ),
                 ],

@@ -1,5 +1,6 @@
-// import 'package:crowdless/constants/colors.dart';
-import '../../../router/app_router.dart' as route;
+import 'package:crowdless/screens/navbar/navabr.dart';
+
+// import '../../../router/app_router.dart' as route;
 import 'package:crowdless/constants/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -19,29 +20,19 @@ class _BackgroundMainState extends State<BackgroundMain> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
+      endDrawer: const NavBar(),
       appBar: AppBar(
+        iconTheme: const IconThemeData(color: primaryColor),
         elevation: 0,
-        backgroundColor: primaryLightColor.withOpacity(0),
-        leading: ClipRRect(
-          borderRadius: BorderRadius.circular(20.0),
-          child: Image.asset(
-            'assets/images/logo_appbar.png',
-            width: size.width * 0.01,
-            height: size.height * 0.01,
-            fit: BoxFit.fill,
-          ),
-        ),
-        actions: <Widget>[
-          IconButton(
-            onPressed: () {
-              Navigator.pop(context, route.loginPage);
-            },
-            icon: const Icon(
-              Icons.logout_rounded,
+        backgroundColor: Colors.white.withOpacity(0),
+        leading: GestureDetector(
+            child: const Icon(
+              Icons.arrow_back_ios,
               color: primaryColor,
             ),
-          )
-        ],
+            onTap: () {
+              Navigator.pop(context);
+            }),
       ),
       body: SizedBox(
         height: size.height,
@@ -83,30 +74,6 @@ class _BackgroundMainState extends State<BackgroundMain> {
             SizedBox(
               height: size.height - kToolbarHeight,
               child: widget.child,
-            ),
-          ],
-        ),
-      ),
-      bottomNavigationBar: SizedBox(
-        height: size.height * 0.09,
-        child: Row(
-          // crossAxisAlignment: CrossAxisAlignment.stretch,
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: <Widget>[
-            Icon(
-              Icons.home,
-              color: primaryColor,
-              size: size.width * 0.08,
-            ),
-            Icon(
-              Icons.notifications_none,
-              color: primaryColor,
-              size: size.width * 0.08,
-            ),
-            Icon(
-              Icons.person,
-              color: primaryColor,
-              size: size.width * 0.08,
             ),
           ],
         ),

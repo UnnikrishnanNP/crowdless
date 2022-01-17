@@ -16,7 +16,11 @@ class _ViewVistsState extends State<ViewVists> {
     return BackgroundMain(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
-        children: const [],
+        children: const [
+          Center(
+            child: Text('Coming Soon'),
+          ),
+        ],
       ),
     );
   }
