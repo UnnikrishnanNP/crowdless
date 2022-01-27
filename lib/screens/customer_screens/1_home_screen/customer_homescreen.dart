@@ -1,6 +1,5 @@
 import 'package:crowdless/constants/colors.dart';
 import 'package:crowdless/widgets/other_widgets/background.dart';
-
 import 'package:crowdless/widgets/other_widgets/custom_card.dart';
 import 'package:flutter/material.dart';
 import '../../../router/app_router.dart' as route;

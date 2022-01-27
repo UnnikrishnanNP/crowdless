@@ -1,4 +1,5 @@
 import 'package:crowdless/constants/colors.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import '../../../router/app_router.dart' as route;
 import 'package:flutter/material.dart';
 
@@ -77,17 +78,20 @@ class _NavBarState extends State<NavBar> {
             onTap: () => debugPrint('Help'),
           ),
           ListTile(
-            leading: const Icon(
-              Icons.logout,
-              color: primaryColor,
-            ),
-            title: const Text(
-              'Logout',
-              style: TextStyle(fontSize: 15),
-            ),
-            onTap: () =>
-                Navigator.pushReplacementNamed(context, route.loginPage),
-          ),
+              leading: const Icon(
+                Icons.logout,
+                color: primaryColor,
+              ),
+              title: const Text(
+                'Logout',
+                style: TextStyle(fontSize: 15),
+              ),
+              onTap: () {
+                FirebaseAuth.instance.signOut().then((value) {
+                  Navigator.pushReplacementNamed(context, route.loginPage);
+                  debugPrint('Logged Out');
+                });
+              }),
         ],
       ),
     );

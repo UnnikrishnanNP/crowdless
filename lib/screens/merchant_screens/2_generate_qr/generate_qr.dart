@@ -1,5 +1,6 @@
 import 'package:crowdless/widgets/other_widgets/background.dart';
 import 'package:flutter/material.dart';
+import 'package:qr_flutter/qr_flutter.dart';
 
 class GenerateQRPage extends StatefulWidget {
   const GenerateQRPage({Key? key}) : super(key: key);
@@ -11,9 +12,11 @@ class GenerateQRPage extends StatefulWidget {
 class _GenerateQRPageState extends State<GenerateQRPage> {
   @override
   Widget build(BuildContext context) {
-    return const BackgroundMain(
+    return BackgroundMain(
       child: Center(
-        child: Text('Coming Soon'),
+        child: QrImage(
+          data: 'G dgd',
+        ),
       ),
     );
   }

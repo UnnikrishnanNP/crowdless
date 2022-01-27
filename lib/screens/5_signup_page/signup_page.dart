@@ -1,3 +1,6 @@
+// import 'dart:js_util';
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:crowdless/constants/colors.dart';
@@ -19,22 +22,39 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
-  final _auth = FirebaseAuth.instance;
+  List<String> userType = ['Merchant', 'Customer'];
   late String email;
   late String name;
   late String password;
   late String phoneNumber;
-  late String _selectedValue;
-  @override
-  void initState() {
-    super.initState();
-    _selectedValue = 'merchant';
+  late String user;
+  late int selectedIndex = 0;
+
+  final _auth = FirebaseAuth.instance;
+  CollectionReference users = FirebaseFirestore.instance.collection('users');
+
+  int? changeIndex(int index) {
+    setState(() {
+      selectedIndex = index;
+      user = userType[index];
+    });
   }
 
-  setSelectedRadio(String value) {
-    setState(() {
-      _selectedValue = value;
-    });
+  Widget customRadioButton(String text, int index) {
+    return OutlinedButton(
+      onPressed: () => changeIndex(index),
+      child: Text(text),
+      style: OutlinedButton.styleFrom(
+        backgroundColor:
+            selectedIndex == index ? inputFieldColor : secondaryColor,
+        side: BorderSide(
+            color: selectedIndex == index ? primaryColor : inputFieldColor),
+        primary: primaryColor,
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10),
+        ),
+      ),
+    );
   }
 
   @override
@@ -91,9 +111,29 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
           ),
           SizedBox(
-            height: size.height * 0.05,
+            height: size.height * 0.02,
           ),
-
+          Column(
+            children: [
+              const Text(
+                'You are ',
+                style: TextStyle(color: primaryColor),
+              ),
+              Row(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    customRadioButton(userType[0], 0),
+                    const SizedBox(
+                      width: 10,
+                    ),
+                    customRadioButton(userType[1], 1),
+                  ]),
+            ],
+          ),
+          SizedBox(
+            height: size.height * 0.02,
+          ),
           // signup button
           RoundedButton(
             text: 'Sign Up',
@@ -101,12 +141,18 @@ class _SignUpPageState extends State<SignUpPage> {
               try {
                 final newUser = await _auth.createUserWithEmailAndPassword(
                     email: email, password: password);
+                users.add({
+                  'name': name,
+                  'email': email,
+                  'phoneNumber': phoneNumber,
+                  'userType': user,
+                }).then((value) => debugPrint('User added'));
                 // ignore: unnecessary_null_comparison
                 if (newUser != null) {
-                  if (_selectedValue == 'customer') {
-                    Navigator.pushNamed(context, route.customerHomePage);
-                  } else {
+                  if (user == userType[0]) {
                     Navigator.pushNamed(context, route.merchantHomePage);
+                  } else {
+                    Navigator.pushNamed(context, route.customerHomePage);
                   }
                 }
               } catch (error) {
@@ -126,6 +172,9 @@ class _SignUpPageState extends State<SignUpPage> {
             login: false,
           ),
           const OthersOption(),
+          SizedBox(
+            height: size.height * 0.02,
+          ),
         ],
       ),
     );

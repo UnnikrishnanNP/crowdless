@@ -71,10 +71,7 @@ class _BackgroundMainState extends State<BackgroundMain> {
                 width: size.width * 0.65,
               ),
             ),
-            SizedBox(
-              height: size.height - kToolbarHeight,
-              child: widget.child,
-            ),
+            widget.child,
           ],
         ),
       ),

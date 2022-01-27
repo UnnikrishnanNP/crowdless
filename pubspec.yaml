@@ -28,6 +28,7 @@ environment:
 # versions available, run `flutter pub outdated`.
 dependencies:
   animated_splash_screen: ^1.1.0
+  auth_buttons: ^2.0.4
   cloud_firestore: ^3.1.6
   cupertino_icons: ^1.0.2
   firebase_auth: ^3.3.5
@@ -35,6 +36,9 @@ dependencies:
   flutter:
     sdk: flutter
   flutter_svg: ^1.0.0
+  font_awesome_flutter: ^9.2.0
+  google_sign_in: ^5.2.3
+  http: ^0.13.4
   pretty_qr_code: ^2.0.2
   qr_code_scanner: ^0.6.1
   qr_flutter: ^4.0.0

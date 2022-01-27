@@ -1,5 +1,3 @@
-// ignore_for_file: unused_local_variable, avoid_print
-
 // import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:crowdless/widgets/credentials_widgets/background_widget.dart';
@@ -90,9 +88,12 @@ class _LoginPageState extends State<LoginPage> {
                 Navigator.pushReplacementNamed(context, route.signUpPage),
           ),
           SizedBox(
-            height: size.height * 0.05,
+            height: size.height * 0.03,
           ),
-          const OthersOption()
+          const OthersOption(),
+          SizedBox(
+            height: size.height * 0.03,
+          ),
         ],
       ),
     );
