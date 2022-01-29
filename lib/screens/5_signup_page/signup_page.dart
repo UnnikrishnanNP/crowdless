@@ -1,6 +1,6 @@
-// import 'dart:js_util';
+// import 'package:cloud_firestore/cloud_firestore.dart';
+// import 'package:firebase_core/firebase_core.dart';
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:crowdless/constants/colors.dart';
@@ -11,6 +11,7 @@ import 'package:crowdless/widgets/credentials_widgets/others_options.dart';
 import 'package:crowdless/widgets/credentials_widgets/rounded_button.dart';
 import 'package:crowdless/widgets/credentials_widgets/rounded_inputfield.dart';
 import 'package:crowdless/widgets/credentials_widgets/rounded_passwordfield.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../../router/app_router.dart' as route;
 
@@ -31,12 +32,24 @@ class _SignUpPageState extends State<SignUpPage> {
   late int selectedIndex = 0;
 
   final _auth = FirebaseAuth.instance;
-  CollectionReference users = FirebaseFirestore.instance.collection('users');
+  final dbref = FirebaseDatabase.instance.ref().child('Users');
+
+  // DocumentReference<Map<String, dynamic>> users =
+  //     FirebaseFirestore.instance.collection('data').doc('users');
 
   int? changeIndex(int index) {
     setState(() {
       selectedIndex = index;
       user = userType[index];
+    });
+  }
+
+  void addUsers(String uID) {
+    dbref.child(uID).set({
+      'name': name,
+      'email': email,
+      'phoneNumber': phoneNumber,
+      'userType': user,
     });
   }
 
@@ -141,14 +154,13 @@ class _SignUpPageState extends State<SignUpPage> {
               try {
                 final newUser = await _auth.createUserWithEmailAndPassword(
                     email: email, password: password);
-                users.add({
-                  'name': name,
-                  'email': email,
-                  'phoneNumber': phoneNumber,
-                  'userType': user,
-                }).then((value) => debugPrint('User added'));
+
+                // users.set(data).then((value) => debugPrint('User added'));
                 // ignore: unnecessary_null_comparison
                 if (newUser != null) {
+                  final User userCurrent = _auth.currentUser!;
+                  final uId = userCurrent.uid;
+                  addUsers(uId);
                   if (user == userType[0]) {
                     Navigator.pushNamed(context, route.merchantHomePage);
                   } else {

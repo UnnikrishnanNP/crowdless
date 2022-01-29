@@ -1,6 +1,8 @@
 import 'package:crowdless/constants/colors.dart';
 import 'package:crowdless/widgets/other_widgets/background.dart';
 import 'package:crowdless/widgets/other_widgets/custom_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../../../router/app_router.dart' as route;
 
@@ -12,6 +14,7 @@ class CustomerHomeScreen extends StatefulWidget {
 }
 
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
+  final dbRef = FirebaseDatabase.instance.ref().child('Users');
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -82,4 +85,14 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       ),
     );
   }
+
+  showData() {}
+
+  // Future<String?> text() async {
+  //   final User userCurrent = _auth.currentUser!;
+  //   final uId = userCurrent.uid;
+  //   final DatabaseReference docUserType = dbRef.child(uId).child('name');
+  //   final data = await docUserType.get();
+  //   return data.value.toString();
+  // }
 }
