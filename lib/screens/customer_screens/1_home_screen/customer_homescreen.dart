@@ -1,4 +1,8 @@
+// ignore_for_file: avoid_print
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdless/constants/colors.dart';
+import 'package:crowdless/methods/database.dart';
 import 'package:crowdless/widgets/other_widgets/background.dart';
 import 'package:crowdless/widgets/other_widgets/custom_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -14,7 +18,9 @@ class CustomerHomeScreen extends StatefulWidget {
 }
 
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
+  final auth = FirebaseAuth.instance;
   final dbRef = FirebaseDatabase.instance.ref().child('Users');
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
@@ -32,7 +38,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
               child: Padding(
                 padding: EdgeInsets.all(size.width * 0.05),
                 child: Text(
-                  'Hi <--Name-->👋🏼',
+                  'Hi <-- Name --> 👋🏼',
                   style: Theme.of(context)
                       .textTheme
                       .headline4
@@ -85,8 +91,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
       ),
     );
   }
-
-  showData() {}
 
   // Future<String?> text() async {
   //   final User userCurrent = _auth.currentUser!;

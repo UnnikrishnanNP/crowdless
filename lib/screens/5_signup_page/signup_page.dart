@@ -1,6 +1,7 @@
 // import 'package:cloud_firestore/cloud_firestore.dart';
 // import 'package:firebase_core/firebase_core.dart';
 
+import 'package:crowdless/methods/authentication.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:crowdless/constants/colors.dart';
@@ -30,12 +31,12 @@ class _SignUpPageState extends State<SignUpPage> {
   late String phoneNumber;
   late String user;
   late int selectedIndex = 0;
+  bool isLoading = false;
 
-  final _auth = FirebaseAuth.instance;
   final dbref = FirebaseDatabase.instance.ref().child('Users');
 
   // DocumentReference<Map<String, dynamic>> users =
-  //     FirebaseFirestore.instance.collection('data').doc('users');
+  //     FirebaseFirestore.instance.collection('data').doc();
 
   int? changeIndex(int index) {
     setState(() {
@@ -77,117 +78,120 @@ class _SignUpPageState extends State<SignUpPage> {
     return BackgroundWidget(
       title: 'Sign Up',
       description: 'Let\'s Get Started',
-      child: Column(
-        children: [
-          SizedBox(
-            height: size.height * 0.025,
-          ),
-          RoundedInputField(
-            keyboardType: TextInputType.text,
-            hintTextTitle: 'Name',
-            onChanged: (value) {
-              name = value;
-            },
-            icon: const Icon(
-              Icons.person,
-              color: primaryColor,
+      child: Form(
+        child: Column(
+          children: [
+            SizedBox(
+              height: size.height * 0.025,
             ),
-          ),
-          RoundedInputField(
-            keyboardType: TextInputType.emailAddress,
-            hintTextTitle: 'Email',
-            onChanged: (value) {
-              email = value;
-            },
-            icon: const Icon(
-              Icons.email,
-              color: primaryColor,
-            ),
-          ),
-          TextFieldContainer(
-            child: RoundedPasswordField(
+            RoundedInputField(
+              keyboardType: TextInputType.text,
+              hintTextTitle: 'Name',
               onChanged: (value) {
-                password = value;
+                name = value;
               },
-              hintTextTitle: 'Password',
-            ),
-          ),
-          RoundedInputField(
-            keyboardType: TextInputType.number,
-            hintTextTitle: 'Phone Number',
-            onChanged: (value) {
-              phoneNumber = value;
-            },
-            icon: const Icon(
-              Icons.phone,
-              color: primaryColor,
-            ),
-          ),
-          SizedBox(
-            height: size.height * 0.02,
-          ),
-          Column(
-            children: [
-              const Text(
-                'You are ',
-                style: TextStyle(color: primaryColor),
+              icon: const Icon(
+                Icons.person,
+                color: primaryColor,
               ),
-              Row(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  crossAxisAlignment: CrossAxisAlignment.center,
-                  children: [
-                    customRadioButton(userType[0], 0),
-                    const SizedBox(
-                      width: 10,
-                    ),
-                    customRadioButton(userType[1], 1),
-                  ]),
-            ],
-          ),
-          SizedBox(
-            height: size.height * 0.02,
-          ),
-          // signup button
-          RoundedButton(
-            text: 'Sign Up',
-            press: () async {
-              try {
-                final newUser = await _auth.createUserWithEmailAndPassword(
-                    email: email, password: password);
-
-                // users.set(data).then((value) => debugPrint('User added'));
-                // ignore: unnecessary_null_comparison
-                if (newUser != null) {
-                  final User userCurrent = _auth.currentUser!;
-                  final uId = userCurrent.uid;
-                  addUsers(uId);
+            ),
+            RoundedInputField(
+              keyboardType: TextInputType.emailAddress,
+              hintTextTitle: 'Email',
+              onChanged: (value) {
+                email = value;
+              },
+              icon: const Icon(
+                Icons.email,
+                color: primaryColor,
+              ),
+            ),
+            TextFieldContainer(
+              child: RoundedPasswordField(
+                onChanged: (value) {
+                  password = value;
+                },
+                hintTextTitle: 'Password',
+              ),
+            ),
+            RoundedInputField(
+              keyboardType: TextInputType.number,
+              hintTextTitle: 'Phone Number',
+              onChanged: (value) {
+                phoneNumber = value;
+              },
+              icon: const Icon(
+                Icons.phone,
+                color: primaryColor,
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
+            Column(
+              children: [
+                const Text(
+                  'You are ',
+                  style: TextStyle(color: primaryColor),
+                ),
+                Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      customRadioButton(userType[0], 0),
+                      const SizedBox(
+                        width: 10,
+                      ),
+                      customRadioButton(userType[1], 1),
+                    ]),
+              ],
+            ),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
+            // signup button
+            RoundedButton(
+              text: 'Sign Up',
+              press: () async {
+                try {
+                  await Authentication()
+                      .signUp(name, email, password, phoneNumber, user);
                   if (user == userType[0]) {
                     Navigator.pushNamed(context, route.merchantHomePage);
                   } else {
                     Navigator.pushNamed(context, route.customerHomePage);
                   }
+                } on FirebaseException catch (error) {
+                  if (error.code == 'weak-password') {
+                    ScaffoldMessenger.of(context).showSnackBar(
+                      const SnackBar(
+                        content: Text(
+                          "Password is weak",
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: primaryColor,
+                      ),
+                    );
+                  }
                 }
-              } catch (error) {
-                // ignore: avoid_print
-                print(error);
-              }
-            },
-            color: primaryColor,
-            textColor: Colors.white,
-          ),
-          SizedBox(
-            height: size.height * 0.03,
-          ),
-          AccountCheck(
-            press: () =>
-                Navigator.pushReplacementNamed(context, route.loginPage),
-            login: false,
-          ),
-          const OthersOption(),
-          SizedBox(
-            height: size.height * 0.02,
-          ),
-        ],
+              },
+              color: primaryColor,
+              textColor: Colors.white,
+            ),
+            SizedBox(
+              height: size.height * 0.03,
+            ),
+            AccountCheck(
+              press: () =>
+                  Navigator.pushReplacementNamed(context, route.loginPage),
+              login: false,
+            ),
+            const OthersOption(),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
+          ],
+        ),
       ),
     );
   }

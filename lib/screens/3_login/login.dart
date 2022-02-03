@@ -1,7 +1,8 @@
-// ignore_for_file: unnecessary_null_comparison
+// ignore_for_file: unnecessary_null_comparison, unused_field, avoid_print
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:crowdless/methods/authentication.dart';
+import 'package:crowdless/methods/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:crowdless/widgets/credentials_widgets/background_widget.dart';
@@ -26,7 +27,7 @@ class LoginPage extends StatefulWidget {
 }
 
 class _LoginPageState extends State<LoginPage> {
-  final _auth = FirebaseAuth.instance;
+  final auth = FirebaseAuth.instance;
   final dbRef = FirebaseDatabase.instance.ref().child('Users');
 
   // CollectionReference userCollection =
@@ -75,63 +76,23 @@ class _LoginPageState extends State<LoginPage> {
             color: primaryColor,
             text: 'Login',
             press: () async {
-              final newUser = _auth.signInWithEmailAndPassword(
-                  email: email, password: password);
+              try {
+                await Authentication().login(email, password);
+                var fetchedData = await DataBaseMethods()
+                    .getUserFromDB(auth.currentUser!.uid)
+                    .then((snapshot) => snapshot.get('userType'));
 
-              if (newUser != null) {
-                final User userCurrent = _auth.currentUser!;
-                final uId = userCurrent.uid;
-                final DatabaseReference docUserType =
-                    dbRef.child(uId).child('userType');
-                final data = await docUserType.get();
-                if (data.value == 'Customer') {
+                if (fetchedData == 'Customer') {
                   Navigator.pushReplacementNamed(
                       context, route.customerHomePage);
                 } else {
                   Navigator.pushReplacementNamed(
                       context, route.merchantHomePage);
                 }
-                // await dbRef
-                //     .child(uId)
-                //     .child('userType')
-                //     .once()
-                //     .then((DatabaseEvent event) {
-                //   setState(() {
-                //     if (docUserType == 'Customer') {
-                //       Navigator.pushReplacementNamed(
-                //           context, route.customerHomePage);
-                //     } else {
-                //       Navigator.pushReplacementNamed(
-                //           context, route.merchantHomePage);
-                //     }
-                //   });
-                // });
-
-                // final QuerySnapshot result = await userCollection.get();
-                // final List<DocumentSnapshot> documents = result.docs.toList();
-                // for (var data in documents) {
-                //   print(data['userType']);
+              } catch (error) {
+                print(error.toString());
               }
-              // await dbRef
-              //     .child(uId)
-              //     .once()
-              //     .then((DatabaseEvent? event) async {
-              //   // var data = event?.snapshot.value;
-              //   final QuerySnapshot result = awai;
-              //   final List<DocumentSnapshot> documents = result.docs.toList();
-              //   setState(() {
-              //     for (var data in documents) {
-              //       print(data['userType']);
-              //     }
-              // if (documents[] == 'Customer') {
-              //   Navigator.pushReplacementNamed(
-              //       context, route.customerHomePage);
-              // } else {
-              //   Navigator.pushReplacementNamed(
-              //       context, route.merchantHomePage);
-              // }
-              //   });
-              // });
+              // var DataBaseMethods(). = await dbFetch('userType');
             },
             textColor: Colors.white,
           ),
@@ -154,3 +115,56 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 }
+
+              // if (newUser != null) {
+              //   final User userCurrent = _auth.currentUser!;
+              //   final uId = userCurrent.uid;
+              //   final DatabaseReference docUserType =
+              //       dbRef.child(uId).child('userType');
+              //   final data = await docUserType.get();
+              // if (fieldName == 'Customer') {
+              //   Navigator.pushReplacementNamed(context, route.customerHomePage);
+              // } else {
+              //   Navigator.pushReplacementNamed(context, route.merchantHomePage);
+              // }
+              // await dbRef
+              //     .child(uId)
+              //     .child('userType')
+              //     .once()
+              //     .then((DatabaseEvent event) {
+              //   setState(() {
+              //     if (docUserType == 'Customer') {
+              //       Navigator.pushReplacementNamed(
+              //           context, route.customerHomePage);
+              //     } else {
+              //       Navigator.pushReplacementNamed(
+              //           context, route.merchantHomePage);
+              //     }
+              //   });
+              // });
+
+              // final QuerySnapshot result = await userCollection.get();
+              // final List<DocumentSnapshot> documents = result.docs.toList();
+              // for (var data in documents) {
+              //   print(data['userType']);
+
+              // await dbRef
+              //     .child(uId)
+              //     .once()
+              //     .then((DatabaseEvent? event) async {
+              //   // var data = event?.snapshot.value;
+              //   final QuerySnapshot result = awai;
+              //   final List<DocumentSnapshot> documents = result.docs.toList();
+              //   setState(() {
+              //     for (var data in documents) {
+              //       print(data['userType']);
+              //     }
+              // if (documents[] == 'Customer') {
+              //   Navigator.pushReplacementNamed(
+              //       context, route.customerHomePage);
+              // } else {
+              //   Navigator.pushReplacementNamed(
+              //       context, route.merchantHomePage);
+              // }
+              //   });
+              // });
