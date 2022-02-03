@@ -20,7 +20,7 @@ class CustomerHomeScreen extends StatefulWidget {
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   final auth = FirebaseAuth.instance;
   final dbRef = FirebaseDatabase.instance.ref().child('Users');
-  final collectionRef = FirebaseFirestore.instance.collection('users');
+  final userRef = FirebaseFirestore.instance.collection('users');
 
   @override
   void initState() {

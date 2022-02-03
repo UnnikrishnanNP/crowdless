@@ -5,6 +5,7 @@
 import 'dart:io';
 
 import 'package:crowdless/constants/colors.dart';
+import 'package:crowdless/methods/database.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -77,8 +78,17 @@ class _ScanQRPageState extends State<ScanQRPage> {
   }
 
   Widget buildResult() {
+    Map<String, dynamic> data = {
+      'barcode': barcode?.code,
+    };
+    DataBaseMethods().storeScannedData(data);
     return AlertDialog(
-      title: Text(barcode != null ? 'Reuslt : ${barcode!.code}' : 'Scan QR'),
+      content: Center(
+        child: Text(
+          barcode != null ? 'Data added to database' : 'Scan QR',
+          style: const TextStyle(color: primaryColor),
+        ),
+      ),
     );
   }
 }

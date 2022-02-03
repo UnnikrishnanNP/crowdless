@@ -1,6 +1,5 @@
 // ignore_for_file: unnecessary_null_comparison, unused_field, avoid_print
 
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdless/methods/authentication.dart';
 import 'package:crowdless/methods/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -30,7 +29,7 @@ class _LoginPageState extends State<LoginPage> {
   final auth = FirebaseAuth.instance;
   final dbRef = FirebaseDatabase.instance.ref().child('Users');
 
-  // CollectionReference userCollection =
+  // userReference userCollection =
   //     FirebaseFirestore.instance.collection('users');
 
   late String email;

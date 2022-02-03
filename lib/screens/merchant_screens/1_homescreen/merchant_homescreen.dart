@@ -20,7 +20,7 @@ class MercantHomeScreen extends StatefulWidget {
 class _MercantHomeScreenState extends State<MercantHomeScreen> {
   final auth = FirebaseAuth.instance;
   final dbRef = FirebaseDatabase.instance.ref().child('Users');
-  final collectionRef = FirebaseFirestore.instance.collection('users');
+  final userRef = FirebaseFirestore.instance.collection('users');
   @override
   void initState() {
     getqueryDataFromDB();
