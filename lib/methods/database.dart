@@ -11,7 +11,7 @@ class DataBaseMethods {
     return collectionRef.doc(userId).set(userInfoMap);
   }
 
-  Future<Object?> queryData(String fieldName) async {
+  Future<Object?> queryDataFromDB(String fieldName) async {
     final uid = auth.currentUser!.uid;
     final QuerySnapshot snapshot =
         await collectionRef.where('uid', isEqualTo: uid).get();

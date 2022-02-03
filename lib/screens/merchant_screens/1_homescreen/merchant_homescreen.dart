@@ -23,11 +23,11 @@ class _MercantHomeScreenState extends State<MercantHomeScreen> {
   final collectionRef = FirebaseFirestore.instance.collection('users');
   @override
   void initState() {
-    getQueryData();
+    getqueryDataFromDB();
     super.initState();
   }
 
-  getQueryData() async => await DataBaseMethods().queryData('name');
+  getqueryDataFromDB() async => await DataBaseMethods().queryDataFromDB('name');
 
   @override
   Widget build(BuildContext context) {
