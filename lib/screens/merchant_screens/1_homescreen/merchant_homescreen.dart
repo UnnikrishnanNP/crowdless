@@ -1,5 +1,11 @@
+// ignore_for_file: avoid_print
+
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:crowdless/constants/colors.dart';
+import 'package:crowdless/methods/database.dart';
 import 'package:crowdless/widgets/other_widgets/custom_card.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
 import '../../../router/app_router.dart' as route;
 import 'package:flutter/material.dart';
 import 'package:crowdless/widgets/other_widgets/background.dart';
@@ -12,6 +18,17 @@ class MercantHomeScreen extends StatefulWidget {
 }
 
 class _MercantHomeScreenState extends State<MercantHomeScreen> {
+  final auth = FirebaseAuth.instance;
+  final dbRef = FirebaseDatabase.instance.ref().child('Users');
+  final collectionRef = FirebaseFirestore.instance.collection('users');
+  @override
+  void initState() {
+    getQueryData();
+    super.initState();
+  }
+
+  getQueryData() async => await DataBaseMethods().queryData('name');
+
   @override
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;

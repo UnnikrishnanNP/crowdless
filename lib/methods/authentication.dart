@@ -12,7 +12,7 @@ class Authentication {
   }
 
   Future<void> signUp(String name, String email, String password,
-      String phoneNumber, String userType) async {
+      String phoneNumber, String userType, String uid) async {
     UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email, password: password);
 
@@ -21,6 +21,7 @@ class Authentication {
       'email': email,
       'phoneNumber': phoneNumber,
       'userType': userType,
+      'uid': uid,
     };
     if (userCredential != null) {
       DataBaseMethods().addUserToDB(auth.currentUser!.uid, userInfoMap);

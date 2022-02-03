@@ -78,10 +78,7 @@ class _LoginPageState extends State<LoginPage> {
             press: () async {
               try {
                 await Authentication().login(email, password);
-                var fetchedData = await DataBaseMethods()
-                    .getUserFromDB(auth.currentUser!.uid)
-                    .then((snapshot) => snapshot.get('userType'));
-
+                var fetchedData = await DataBaseMethods().queryData('userType');
                 if (fetchedData == 'Customer') {
                   Navigator.pushReplacementNamed(
                       context, route.customerHomePage);

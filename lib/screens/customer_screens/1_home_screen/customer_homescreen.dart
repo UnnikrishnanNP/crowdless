@@ -20,6 +20,15 @@ class CustomerHomeScreen extends StatefulWidget {
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   final auth = FirebaseAuth.instance;
   final dbRef = FirebaseDatabase.instance.ref().child('Users');
+  final collectionRef = FirebaseFirestore.instance.collection('users');
+
+  @override
+  void initState() {
+    getQueryData();
+    super.initState();
+  }
+
+  getQueryData() async => await DataBaseMethods().queryData('name');
 
   @override
   Widget build(BuildContext context) {

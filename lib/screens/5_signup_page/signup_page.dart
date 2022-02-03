@@ -34,6 +34,7 @@ class _SignUpPageState extends State<SignUpPage> {
   bool isLoading = false;
 
   final dbref = FirebaseDatabase.instance.ref().child('Users');
+  final auth = FirebaseAuth.instance;
 
   // DocumentReference<Map<String, dynamic>> users =
   //     FirebaseFirestore.instance.collection('data').doc();
@@ -42,15 +43,6 @@ class _SignUpPageState extends State<SignUpPage> {
     setState(() {
       selectedIndex = index;
       user = userType[index];
-    });
-  }
-
-  void addUsers(String uID) {
-    dbref.child(uID).set({
-      'name': name,
-      'email': email,
-      'phoneNumber': phoneNumber,
-      'userType': user,
     });
   }
 
@@ -154,8 +146,8 @@ class _SignUpPageState extends State<SignUpPage> {
               text: 'Sign Up',
               press: () async {
                 try {
-                  await Authentication()
-                      .signUp(name, email, password, phoneNumber, user);
+                  await Authentication().signUp(name, email, password,
+                      phoneNumber, user, auth.currentUser!.uid);
                   if (user == userType[0]) {
                     Navigator.pushNamed(context, route.merchantHomePage);
                   } else {
