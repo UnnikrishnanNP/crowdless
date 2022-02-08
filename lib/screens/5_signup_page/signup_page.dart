@@ -146,8 +146,8 @@ class _SignUpPageState extends State<SignUpPage> {
               text: 'Sign Up',
               press: () async {
                 try {
-                  await Authentication().signUp(name, email, password,
-                      phoneNumber, user, auth.currentUser!.uid);
+                  await Authentication()
+                      .signUp(name, email, password, phoneNumber, user);
                   if (user == userType[0]) {
                     Navigator.pushNamed(context, route.merchantHomePage);
                   } else {

@@ -6,17 +6,17 @@ import 'package:firebase_auth/firebase_auth.dart';
 class DataBaseMethods {
   final auth = FirebaseAuth.instance;
   final userRef = FirebaseFirestore.instance.collection('users');
-  final scannedDataRef = FirebaseFirestore.instance.collection('scanned_data');
+  final customerDataRef =
+      FirebaseFirestore.instance.collection('customer_data');
+  final merchantDataRef =
+      FirebaseFirestore.instance.collection('merchant_data');
 
   // methods for user collection
   Future addUserToDB(String userId, Map<String, dynamic> userInfoMap) {
     return userRef.doc(userId).set(userInfoMap);
   }
 
-  Future getDataFromDB(String uid) async {
-    return await userRef.doc(uid).get();
-  }
-
+  // get a specific field in document
   Future<Object?> queryDataFromDB(String fieldName) async {
     final uid = auth.currentUser!.uid;
     final QuerySnapshot snapshot =
@@ -27,12 +27,33 @@ class DataBaseMethods {
   }
 
   // methods for scanned_data collection
-  Future<void> storeScannedData(Map<String, dynamic> data) {
-    final uid = auth.currentUser!.uid;
-    return scannedDataRef.doc(uid).set(data);
+  // merchant visitors list
+  Future addMerchantScanData(String uid) async {
+    // cutterntUid is the current uid of customer
+    final currentUid = auth.currentUser!.uid;
+    // the data of currentUid is accessed in order to get uid field
+    final customer = await userRef.doc(currentUid).get();
+    // this uid is the uid that we get after scanning qr code
+    final merchant = await userRef.doc(uid).get();
+    merchantDataRef
+        .doc(merchant['uid'])
+        .collection('visitor')
+        .add(customer.data()!);
+    print('merchant ${merchant.get("name")}');
   }
 
-  Future getScannedDataFromDB(String uid) async {
-    return await scannedDataRef.doc(uid).get();
+  // customer visited list
+  Future addCustomerScanData(String uid) async {
+    // cutterntUid is the current uid of customer
+    final currentUid = auth.currentUser!.uid;
+    // the data of currentUid is accessed in order to get uid field
+    final customer = await userRef.doc(currentUid).get();
+    // this uid is the uid that we get after scanning qr code
+    final merchant = await userRef.doc(uid).get();
+    customerDataRef
+        .doc(customer['uid'])
+        .collection('visited')
+        .add(merchant.data()!);
+    print('merchant ${customer.get("name")}');
   }
 }

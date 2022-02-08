@@ -12,9 +12,10 @@ class Authentication {
   }
 
   Future<void> signUp(String name, String email, String password,
-      String phoneNumber, String userType, String uid) async {
+      String phoneNumber, String userType) async {
     UserCredential userCredential = await auth.createUserWithEmailAndPassword(
         email: email, password: password);
+    final String uid = auth.currentUser!.uid;
 
     Map<String, dynamic> userInfoMap = {
       'name': name,

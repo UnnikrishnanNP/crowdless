@@ -6,7 +6,6 @@ import 'package:crowdless/methods/database.dart';
 import 'package:crowdless/widgets/other_widgets/background.dart';
 import 'package:crowdless/widgets/other_widgets/custom_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import '../../../router/app_router.dart' as route;
 
@@ -19,16 +18,13 @@ class CustomerHomeScreen extends StatefulWidget {
 
 class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   final auth = FirebaseAuth.instance;
-  final dbRef = FirebaseDatabase.instance.ref().child('Users');
   final userRef = FirebaseFirestore.instance.collection('users');
 
-  @override
-  void initState() {
-    getqueryDataFromDB();
-    super.initState();
+  Future? getData() async {
+    final name = await DataBaseMethods().queryDataFromDB('name');
+    print(name);
+    return name;
   }
-
-  getqueryDataFromDB() async => await DataBaseMethods().queryDataFromDB('name');
 
   @override
   Widget build(BuildContext context) {
@@ -46,12 +42,22 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: EdgeInsets.all(size.width * 0.05),
-                child: Text(
-                  'Hi <-- Name --> 👋🏼',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4
-                      ?.copyWith(color: primaryColor),
+                child: FutureBuilder(
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (!snapshot.hasData) {
+                      return const CircularProgressIndicator();
+                    } else {
+                      return Text(
+                        'Hi ${snapshot.data.toString()}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            ?.copyWith(color: primaryColor),
+                      );
+                    }
+                  },
+                  future: getData(),
                 ),
               ),
             ),

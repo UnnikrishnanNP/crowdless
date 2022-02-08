@@ -6,6 +6,8 @@ import 'dart:io';
 
 import 'package:crowdless/constants/colors.dart';
 import 'package:crowdless/methods/database.dart';
+import 'package:crowdless/router/app_router.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -20,6 +22,8 @@ class _ScanQRPageState extends State<ScanQRPage> {
   final qrKey = GlobalKey(debugLabel: 'QR');
   QRViewController? controller;
   Barcode? barcode;
+  bool barocdeScanned = true;
+  String uid = FirebaseAuth.instance.currentUser!.uid;
 
   @override
   void dispose() {
@@ -69,19 +73,20 @@ class _ScanQRPageState extends State<ScanQRPage> {
     setState(() => this.controller = controller);
 
     controller.scannedDataStream.listen(
-      (barcode) => setState(
-        () {
-          this.barcode = barcode;
-        },
-      ),
+      (barcode) => setState(() {
+        this.barcode = barcode;
+        barocdeScanned = true;
+        if (barocdeScanned) {
+          DataBaseMethods().addMerchantScanData(barcode.code ?? "");
+          DataBaseMethods().addCustomerScanData(barcode.code ?? "");
+          controller.pauseCamera();
+          Navigator.pushReplacementNamed(context, customerHomePage);
+        }
+      }),
     );
   }
 
   Widget buildResult() {
-    Map<String, dynamic> data = {
-      'barcode': barcode?.code,
-    };
-    DataBaseMethods().storeScannedData(data);
     return AlertDialog(
       content: Center(
         child: Text(
