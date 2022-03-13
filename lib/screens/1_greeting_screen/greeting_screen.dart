@@ -1,8 +1,16 @@
 import 'dart:async';
 
-import 'package:crowdless/constants/colors.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:crowdless/constants/colors.dart';
+import 'package:crowdless/methods/database.dart';
+import 'package:crowdless/screens/customer_screens/1_home_screen/customer_homescreen.dart';
+import 'package:crowdless/screens/merchant_screens/1_homescreen/merchant_homescreen.dart';
+
 import '../../router/app_router.dart' as route;
+
+String? email;
 
 class GreetingScreen extends StatefulWidget {
   const GreetingScreen({Key? key}) : super(key: key);
@@ -16,7 +24,27 @@ class _GreetingScreenState extends State<GreetingScreen> {
   void initState() {
     super.initState();
     Timer(const Duration(seconds: 3), () {
-      Navigator.pushReplacementNamed(context, route.loginPage);
+      getValidationData().whenComplete(() async {
+        if (email == null) {
+          Navigator.pushReplacementNamed(context, route.loginPage);
+        } else {
+          var fetchedData = await DataBaseMethods().queryDataFromDB('userType');
+          if (fetchedData == 'Customer') {
+            Navigator.pushReplacementNamed(context, route.customerHomePage);
+          } else {
+            Navigator.pushReplacementNamed(context, route.merchantHomePage);
+          }
+        }
+      });
+    });
+  }
+
+  Future getValidationData() async {
+    final SharedPreferences sharedPreferences =
+        await SharedPreferences.getInstance();
+    final obtianedEmail = sharedPreferences.getString('email');
+    setState(() {
+      email = obtianedEmail;
     });
   }
 

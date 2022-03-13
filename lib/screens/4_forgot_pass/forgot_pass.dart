@@ -1,9 +1,10 @@
 // ignore_for_file: unused_local_variable
 
+import 'package:flutter/material.dart';
+
 import 'package:crowdless/constants/colors.dart';
 import 'package:crowdless/widgets/credentials_widgets/rounded_button.dart';
 import 'package:crowdless/widgets/credentials_widgets/rounded_inputfield.dart';
-import 'package:flutter/material.dart';
 
 class ForgotPassword extends StatelessWidget {
   const ForgotPassword({Key? key}) : super(key: key);
@@ -90,10 +91,9 @@ class ForgotPassword extends StatelessWidget {
                           height: size.height * 0.02,
                         ),
                         RoundedButton(
-                          color: primaryColor,
-                          text: 'Submit',
+                          color: customButtonColor,
+                          text: const Text('Submit'),
                           press: () {},
-                          textColor: Colors.white,
                         ),
                         SizedBox(
                           height: size.height * 0.02,

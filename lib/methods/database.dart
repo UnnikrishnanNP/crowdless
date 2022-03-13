@@ -28,7 +28,7 @@ class DataBaseMethods {
 
   // methods for scanned_data collection
   // merchant visitors list
-  Future addMerchantScanData(String uid) async {
+  Future addMerchantScanData(String uid, DateTime time) async {
     // cutterntUid is the current uid of customer
     final currentUid = auth.currentUser!.uid;
     // the data of currentUid is accessed in order to get uid field
@@ -43,7 +43,7 @@ class DataBaseMethods {
   }
 
   // customer visited list
-  Future addCustomerScanData(String uid) async {
+  Future addCustomerScanData(String uid, DateTime time) async {
     // cutterntUid is the current uid of customer
     final currentUid = auth.currentUser!.uid;
     // the data of currentUid is accessed in order to get uid field
@@ -55,5 +55,16 @@ class DataBaseMethods {
         .collection('visited')
         .add(merchant.data()!);
     print('merchant ${customer.get("name")}');
+  }
+
+  // get data of customers
+  Future<DocumentSnapshot<Map<String, dynamic>>> fetchCustomerData(
+      String userId) {
+    return customerDataRef.doc(userId).collection('visited').doc().get();
+  }
+
+  // get data of merchants
+  Future fetchMerchantData(String userId) async {
+    return await merchantDataRef.doc(userId).collection('visitor').doc().get();
   }
 }

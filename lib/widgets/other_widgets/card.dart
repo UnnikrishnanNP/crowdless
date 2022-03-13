@@ -2,17 +2,17 @@ import 'package:crowdless/constants/colors.dart';
 import 'package:flutter/material.dart';
 
 class ViewVisitsCard extends StatelessWidget {
-  final String title;
-  final String description;
-  final Color titleColor;
-  final Color descColor;
+  final Widget title;
+  final Widget description;
+  // final Color titleColor;
+  // final Color descColor;
   final void Function()? onTap;
   const ViewVisitsCard(
       {Key? key,
       required this.title,
       required this.description,
-      required this.titleColor,
-      required this.descColor,
+      // required this.titleColor,
+      // required this.descColor,
       this.onTap})
       : super(key: key);
 
@@ -30,11 +30,7 @@ class ViewVisitsCard extends StatelessWidget {
               Positioned(
                 top: 10,
                 left: 10,
-                child: Text(
-                  title,
-                  style: Theme.of(context).textTheme.headline5?.copyWith(
-                      color: titleColor, fontWeight: FontWeight.w600),
-                ),
+                child: title,
               ),
               SizedBox(
                 height: size.height * 0.12,
@@ -42,13 +38,7 @@ class ViewVisitsCard extends StatelessWidget {
               Positioned(
                 bottom: 10,
                 left: 10,
-                child: Text(
-                  description,
-                  style: Theme.of(context).textTheme.headline6?.copyWith(
-                        color: descColor,
-                        fontWeight: FontWeight.w900,
-                      ),
-                ),
+                child: description,
               )
             ],
           ),

@@ -4,12 +4,12 @@
 
 import 'dart:io';
 
+import 'package:flutter/material.dart';
+import 'package:qr_code_scanner/qr_code_scanner.dart';
+
 import 'package:crowdless/constants/colors.dart';
 import 'package:crowdless/methods/database.dart';
 import 'package:crowdless/router/app_router.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-import 'package:qr_code_scanner/qr_code_scanner.dart';
 
 class ScanQRPage extends StatefulWidget {
   const ScanQRPage({Key? key}) : super(key: key);
@@ -23,7 +23,7 @@ class _ScanQRPageState extends State<ScanQRPage> {
   QRViewController? controller;
   Barcode? barcode;
   bool barocdeScanned = true;
-  String uid = FirebaseAuth.instance.currentUser!.uid;
+  DateTime time = DateTime.now();
 
   @override
   void dispose() {
@@ -77,9 +77,9 @@ class _ScanQRPageState extends State<ScanQRPage> {
         this.barcode = barcode;
         barocdeScanned = true;
         if (barocdeScanned) {
-          DataBaseMethods().addMerchantScanData(barcode.code ?? "");
-          DataBaseMethods().addCustomerScanData(barcode.code ?? "");
           controller.pauseCamera();
+          DataBaseMethods().addMerchantScanData(barcode.code ?? "", time);
+          DataBaseMethods().addCustomerScanData(barcode.code ?? "", time);
           Navigator.pushReplacementNamed(context, customerHomePage);
         }
       }),

@@ -1,8 +1,8 @@
 // ignore_for_file: unnecessary_null_comparison, unused_local_variable
 
-// import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:crowdless/methods/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+
+import 'package:crowdless/methods/database.dart';
 
 class Authentication {
   final auth = FirebaseAuth.instance;

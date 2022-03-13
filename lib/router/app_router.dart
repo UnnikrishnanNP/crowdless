@@ -9,6 +9,7 @@ import 'package:crowdless/screens/customer_screens/3_view_visits/view_visits.dar
 import 'package:crowdless/screens/customer_screens/4_crowd_management/crowd_management.dart';
 import 'package:crowdless/screens/merchant_screens/1_homescreen/merchant_homescreen.dart';
 import 'package:crowdless/screens/merchant_screens/2_generate_qr/generate_qr.dart';
+import 'package:crowdless/screens/merchant_screens/3_view_visitors/view_visitors.dart';
 import 'package:crowdless/screens/merchant_screens/4_crowd_management/crowd_management.dart';
 
 import 'package:flutter/material.dart';
@@ -71,7 +72,7 @@ Route<dynamic> controller(RouteSettings settings) {
       return MaterialPageRoute(builder: (context) => const GenerateQRPage());
 
     case viewVisitors:
-      return MaterialPageRoute(builder: (context) => const ViewVists());
+      return MaterialPageRoute(builder: (context) => const ViewVisitorsPage());
 
     case crowdManagmentMerchant:
       return MaterialPageRoute(

@@ -1,7 +1,10 @@
-import 'package:crowdless/constants/colors.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import '../../../router/app_router.dart' as route;
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+
+import 'package:crowdless/constants/colors.dart';
+
+import '../../../router/app_router.dart' as route;
 
 class NavBar extends StatefulWidget {
   const NavBar({Key? key}) : super(key: key);
@@ -87,7 +90,10 @@ class _NavBarState extends State<NavBar> {
                 style: TextStyle(fontSize: 15),
               ),
               onTap: () {
-                FirebaseAuth.instance.signOut().then((value) {
+                FirebaseAuth.instance.signOut().then((value) async {
+                  final SharedPreferences sharedPreferences =
+                      await SharedPreferences.getInstance();
+                  sharedPreferences.remove('email');
                   Navigator.pushReplacementNamed(context, route.loginPage);
                   debugPrint('Logged Out');
                 });

@@ -1,12 +1,14 @@
 // ignore_for_file: avoid_print
 
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/material.dart';
+
 import 'package:crowdless/constants/colors.dart';
 import 'package:crowdless/methods/database.dart';
 import 'package:crowdless/widgets/other_widgets/background.dart';
 import 'package:crowdless/widgets/other_widgets/custom_card.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
+
 import '../../../router/app_router.dart' as route;
 
 class CustomerHomeScreen extends StatefulWidget {
@@ -22,7 +24,6 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
 
   Future? getData() async {
     final name = await DataBaseMethods().queryDataFromDB('name');
-    print(name);
     return name;
   }
 

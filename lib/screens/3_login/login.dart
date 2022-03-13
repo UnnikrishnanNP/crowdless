@@ -1,20 +1,19 @@
-// ignore_for_file: unnecessary_null_comparison, unused_field, avoid_print
+import 'package:crowdless/screens/3_login/loading_indicator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
+import 'package:crowdless/constants/colors.dart';
 import 'package:crowdless/methods/authentication.dart';
 import 'package:crowdless/methods/database.dart';
-import 'package:firebase_auth/firebase_auth.dart';
-
+import 'package:crowdless/screens/3_login/account_check.dart';
+import 'package:crowdless/screens/3_login/forgot_password_text.dart';
 import 'package:crowdless/widgets/credentials_widgets/background_widget.dart';
 import 'package:crowdless/widgets/credentials_widgets/custom_textfield.dart';
-import 'package:crowdless/widgets/credentials_widgets/others_options.dart';
 import 'package:crowdless/widgets/credentials_widgets/rounded_button.dart';
 import 'package:crowdless/widgets/credentials_widgets/rounded_inputfield.dart';
 import 'package:crowdless/widgets/credentials_widgets/rounded_passwordfield.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
-import 'package:crowdless/constants/colors.dart';
-import 'package:crowdless/screens/3_login/account_check.dart';
-import 'package:crowdless/screens/3_login/forgot_password_text.dart';
 
 import '../../router/app_router.dart' as route;
 
@@ -28,6 +27,7 @@ class LoginPage extends StatefulWidget {
 class _LoginPageState extends State<LoginPage> {
   final auth = FirebaseAuth.instance;
   final dbRef = FirebaseDatabase.instance.ref().child('Users');
+  bool isLoading = false;
 
   // userReference userCollection =
   //     FirebaseFirestore.instance.collection('users');
@@ -72,10 +72,21 @@ class _LoginPageState extends State<LoginPage> {
             height: size.height * 0.02,
           ),
           RoundedButton(
-            color: primaryColor,
-            text: 'Login',
+            color: customButtonColor,
+            text: isLoading
+                ? const LoadingIndicator(text: 'Logging In')
+                : const Text(
+                    'Login',
+                    style: TextStyle(color: primaryLightColor),
+                  ),
             press: () async {
+              setState(() {
+                isLoading = true;
+              });
               try {
+                final SharedPreferences sharedPreferences =
+                    await SharedPreferences.getInstance();
+                sharedPreferences.setString('email', email);
                 await Authentication().login(email, password);
                 var fetchedData =
                     await DataBaseMethods().queryDataFromDB('userType');
@@ -87,11 +98,9 @@ class _LoginPageState extends State<LoginPage> {
                       context, route.merchantHomePage);
                 }
               } catch (error) {
-                print(error.toString());
+                debugPrint(error.toString());
               }
-              // var DataBaseMethods(). = await dbFetch('userType');
             },
-            textColor: Colors.white,
           ),
           SizedBox(
             height: size.height * 0.05,
@@ -103,65 +112,8 @@ class _LoginPageState extends State<LoginPage> {
           SizedBox(
             height: size.height * 0.03,
           ),
-          const OthersOption(),
-          SizedBox(
-            height: size.height * 0.03,
-          ),
         ],
       ),
     );
   }
 }
-
-              // if (newUser != null) {
-              //   final User userCurrent = _auth.currentUser!;
-              //   final uId = userCurrent.uid;
-              //   final DatabaseReference docUserType =
-              //       dbRef.child(uId).child('userType');
-              //   final data = await docUserType.get();
-              // if (fieldName == 'Customer') {
-              //   Navigator.pushReplacementNamed(context, route.customerHomePage);
-              // } else {
-              //   Navigator.pushReplacementNamed(context, route.merchantHomePage);
-              // }
-              // await dbRef
-              //     .child(uId)
-              //     .child('userType')
-              //     .once()
-              //     .then((DatabaseEvent event) {
-              //   setState(() {
-              //     if (docUserType == 'Customer') {
-              //       Navigator.pushReplacementNamed(
-              //           context, route.customerHomePage);
-              //     } else {
-              //       Navigator.pushReplacementNamed(
-              //           context, route.merchantHomePage);
-              //     }
-              //   });
-              // });
-
-              // final QuerySnapshot result = await userCollection.get();
-              // final List<DocumentSnapshot> documents = result.docs.toList();
-              // for (var data in documents) {
-              //   print(data['userType']);
-
-              // await dbRef
-              //     .child(uId)
-              //     .once()
-              //     .then((DatabaseEvent? event) async {
-              //   // var data = event?.snapshot.value;
-              //   final QuerySnapshot result = awai;
-              //   final List<DocumentSnapshot> documents = result.docs.toList();
-              //   setState(() {
-              //     for (var data in documents) {
-              //       print(data['userType']);
-              //     }
-              // if (documents[] == 'Customer') {
-              //   Navigator.pushReplacementNamed(
-              //       context, route.customerHomePage);
-              // } else {
-              //   Navigator.pushReplacementNamed(
-              //       context, route.merchantHomePage);
-              // }
-              //   });
-              // });

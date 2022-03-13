@@ -1,19 +1,17 @@
-// import 'package:cloud_firestore/cloud_firestore.dart';
-// import 'package:firebase_core/firebase_core.dart';
-
-import 'package:crowdless/methods/authentication.dart';
+import 'package:crowdless/screens/3_login/loading_indicator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_database/firebase_database.dart';
+import 'package:flutter/material.dart';
 
 import 'package:crowdless/constants/colors.dart';
+import 'package:crowdless/methods/authentication.dart';
 import 'package:crowdless/screens/3_login/account_check.dart';
 import 'package:crowdless/widgets/credentials_widgets/background_widget.dart';
 import 'package:crowdless/widgets/credentials_widgets/custom_textfield.dart';
-import 'package:crowdless/widgets/credentials_widgets/others_options.dart';
 import 'package:crowdless/widgets/credentials_widgets/rounded_button.dart';
 import 'package:crowdless/widgets/credentials_widgets/rounded_inputfield.dart';
 import 'package:crowdless/widgets/credentials_widgets/rounded_passwordfield.dart';
-import 'package:firebase_database/firebase_database.dart';
-import 'package:flutter/material.dart';
+
 import '../../router/app_router.dart' as route;
 
 class SignUpPage extends StatefulWidget {
@@ -143,8 +141,17 @@ class _SignUpPageState extends State<SignUpPage> {
             ),
             // signup button
             RoundedButton(
-              text: 'Sign Up',
+              color: customButtonColor,
+              text: isLoading
+                  ? const LoadingIndicator(text: 'Signing In')
+                  : const Text(
+                      'Sign Up',
+                      style: TextStyle(color: primaryLightColor),
+                    ),
               press: () async {
+                setState(() {
+                  isLoading = true;
+                });
                 try {
                   await Authentication()
                       .signUp(name, email, password, phoneNumber, user);
@@ -167,8 +174,6 @@ class _SignUpPageState extends State<SignUpPage> {
                   }
                 }
               },
-              color: primaryColor,
-              textColor: Colors.white,
             ),
             SizedBox(
               height: size.height * 0.03,
@@ -177,10 +182,6 @@ class _SignUpPageState extends State<SignUpPage> {
               press: () =>
                   Navigator.pushReplacementNamed(context, route.loginPage),
               login: false,
-            ),
-            const OthersOption(),
-            SizedBox(
-              height: size.height * 0.02,
             ),
           ],
         ),
