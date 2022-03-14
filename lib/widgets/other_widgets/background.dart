@@ -20,19 +20,11 @@ class _BackgroundMainState extends State<BackgroundMain> {
 
     return Scaffold(
       extendBodyBehindAppBar: true,
-      endDrawer: const NavBar(),
+      drawer: const NavBar(),
       appBar: AppBar(
         iconTheme: const IconThemeData(color: primaryColor),
         elevation: 0,
         backgroundColor: Colors.white.withOpacity(0),
-        leading: GestureDetector(
-            child: const Icon(
-              Icons.arrow_back_ios,
-              color: primaryColor,
-            ),
-            onTap: () {
-              Navigator.pop(context);
-            }),
       ),
       body: SizedBox(
         height: size.height,

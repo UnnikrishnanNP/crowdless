@@ -5,8 +5,6 @@ import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:crowdless/constants/colors.dart';
 import 'package:crowdless/methods/database.dart';
-import 'package:crowdless/screens/customer_screens/1_home_screen/customer_homescreen.dart';
-import 'package:crowdless/screens/merchant_screens/1_homescreen/merchant_homescreen.dart';
 
 import '../../router/app_router.dart' as route;
 
