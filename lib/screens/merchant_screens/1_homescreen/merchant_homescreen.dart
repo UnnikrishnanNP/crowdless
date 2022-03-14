@@ -21,6 +21,11 @@ class _MercantHomeScreenState extends State<MercantHomeScreen> {
   final auth = FirebaseAuth.instance;
   final dbRef = FirebaseDatabase.instance.ref().child('Users');
   final userRef = FirebaseFirestore.instance.collection('users');
+  Future? getData() async {
+    final name = await DataBaseMethods().queryDataFromDB('name');
+    return name;
+  }
+
   @override
   void initState() {
     getqueryDataFromDB();
@@ -44,12 +49,22 @@ class _MercantHomeScreenState extends State<MercantHomeScreen> {
               alignment: Alignment.centerLeft,
               child: Padding(
                 padding: EdgeInsets.all(size.width * 0.05),
-                child: Text(
-                  'Welcome Back👋🏼',
-                  style: Theme.of(context)
-                      .textTheme
-                      .headline4
-                      ?.copyWith(color: primaryColor),
+                child: FutureBuilder(
+                  builder:
+                      (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                    if (!snapshot.hasData) {
+                      return const Text('Data Loading...');
+                    } else {
+                      return Text(
+                        'Hi ${snapshot.data.toString()}',
+                        style: Theme.of(context)
+                            .textTheme
+                            .headline4
+                            ?.copyWith(color: primaryColor),
+                      );
+                    }
+                  },
+                  future: getData(),
                 ),
               ),
             ),

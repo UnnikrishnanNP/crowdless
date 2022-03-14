@@ -1,3 +1,4 @@
+import 'package:crowdless/methods/database.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -14,6 +15,12 @@ class NavBar extends StatefulWidget {
 }
 
 class _NavBarState extends State<NavBar> {
+  Future? getData() async {
+    final name = await DataBaseMethods().queryDataFromDB('name');
+    final email = await DataBaseMethods().queryDataFromDB('email');
+    return [name, email];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
@@ -21,20 +28,44 @@ class _NavBarState extends State<NavBar> {
       child: ListView(
         padding: EdgeInsets.zero,
         children: [
-          const UserAccountsDrawerHeader(
-            accountName: Text(
-              'Unnikrishnan',
-              style: TextStyle(fontSize: 30),
+          UserAccountsDrawerHeader(
+            accountName: FutureBuilder(
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (!snapshot.hasData) {
+                  return const Text('Data Loading...');
+                } else {
+                  return Text(
+                    snapshot.data[0].toString(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline4
+                        ?.copyWith(color: primaryLightColor),
+                  );
+                }
+              },
+              future: getData(),
             ),
-            accountEmail: Text(
-              'uknp0371@gmail.com',
-              style: TextStyle(fontSize: 15),
+            accountEmail: FutureBuilder(
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (!snapshot.hasData) {
+                  return const Text('Data Loading...');
+                } else {
+                  return Text(
+                    snapshot.data[1].toString(),
+                    style: Theme.of(context)
+                        .textTheme
+                        .headline6
+                        ?.copyWith(color: primaryLightColor),
+                  );
+                }
+              },
+              future: getData(),
             ),
-            currentAccountPicture: CircleAvatar(
+            currentAccountPicture: const CircleAvatar(
               backgroundColor: primaryLightColor,
               child: ClipOval(),
             ),
-            decoration: BoxDecoration(color: primaryColor),
+            decoration: const BoxDecoration(color: primaryColor),
           ),
           ListTile(
             leading: const Icon(
