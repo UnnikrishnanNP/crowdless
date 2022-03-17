@@ -3,10 +3,9 @@ import 'package:flutter/material.dart';
 
 class CustomCard extends StatelessWidget {
   final String title;
-  final String description;
+  final Widget description;
   final IconData icon;
   final Color titleColor;
-  final Color descColor;
   final void Function()? onTap;
   const CustomCard({
     Key? key,
@@ -14,7 +13,6 @@ class CustomCard extends StatelessWidget {
     required this.description,
     required this.icon,
     required this.titleColor,
-    required this.descColor,
     required this.onTap,
   }) : super(key: key);
 
@@ -52,13 +50,7 @@ class CustomCard extends StatelessWidget {
               Positioned(
                 bottom: 10,
                 left: 10,
-                child: Text(
-                  description,
-                  style: Theme.of(context).textTheme.headline6?.copyWith(
-                        color: descColor,
-                        fontWeight: FontWeight.w900,
-                      ),
-                ),
+                child: description,
               )
             ],
           ),

@@ -58,13 +58,20 @@ class DataBaseMethods {
   }
 
   // get data of customers
-  Future<DocumentSnapshot<Map<String, dynamic>>> fetchCustomerData(
-      String userId) {
-    return customerDataRef.doc(userId).collection('visited').doc().get();
+  Future<List<DocumentSnapshot<Object?>>> fetchCustomerData(
+      String userId) async {
+    QuerySnapshot querySnapshot =
+        await customerDataRef.doc(userId).collection('visited').get();
+    List<DocumentSnapshot> docCount = querySnapshot.docs;
+    return docCount;
   }
 
   // get data of merchants
-  Future fetchMerchantData(String userId) async {
-    return await merchantDataRef.doc(userId).collection('visitor').doc().get();
+  Future<List<DocumentSnapshot<Object?>>> fetchMerchantData(
+      String userId) async {
+    QuerySnapshot querySnapshot =
+        await merchantDataRef.doc(userId).collection('visitor').get();
+    List<DocumentSnapshot> docCount = querySnapshot.docs;
+    return docCount;
   }
 }

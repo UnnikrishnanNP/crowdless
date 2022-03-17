@@ -61,10 +61,6 @@ class _NavBarState extends State<NavBar> {
               },
               future: getData(),
             ),
-            currentAccountPicture: const CircleAvatar(
-              backgroundColor: primaryLightColor,
-              child: ClipOval(),
-            ),
             decoration: const BoxDecoration(color: primaryColor),
           ),
           ListTile(

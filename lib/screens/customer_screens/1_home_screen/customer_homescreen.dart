@@ -31,6 +31,13 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
   Widget build(BuildContext context) {
     final Size size = MediaQuery.of(context).size;
 
+    Future? getCount() async {
+      final count =
+          await DataBaseMethods().fetchCustomerData(auth.currentUser!.uid);
+      print(count.length);
+      return count.length;
+    }
+
     return BackgroundMain(
       child: SingleChildScrollView(
         child: Column(
@@ -71,9 +78,14 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                   CustomCard(
                     icon: Icons.qr_code_scanner,
                     title: 'Scan QR',
-                    description: 'Scan before you enter',
+                    description: Text(
+                      'Scan before you enter',
+                      style: Theme.of(context).textTheme.headline6?.copyWith(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900,
+                          ),
+                    ),
                     titleColor: Colors.black,
-                    descColor: Colors.black,
                     onTap: () {
                       Navigator.pushNamed(context, route.scanQRPage);
                     },
@@ -81,9 +93,26 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                   CustomCard(
                     icon: Icons.folder_open,
                     title: 'View Visits',
-                    description: 'You visited 1 place',
+                    description: FutureBuilder(
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
+                        if (!snapshot.hasData) {
+                          return const CircularProgressIndicator();
+                        } else {
+                          return Text(
+                            'You visited ${snapshot.data.toString()} places',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                ?.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w900),
+                          );
+                        }
+                      },
+                      future: getCount(),
+                    ),
                     titleColor: Colors.black,
-                    descColor: Colors.black,
                     onTap: () {
                       Navigator.pushNamed(context, route.viewVists);
                     },
@@ -91,9 +120,14 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
                   CustomCard(
                     icon: Icons.people_alt,
                     title: 'Crowd Mangament',
-                    description: 'View Crowd at your location',
+                    description: Text(
+                      'View Crowd at your location',
+                      style: Theme.of(context).textTheme.headline6?.copyWith(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900,
+                          ),
+                    ),
                     titleColor: Colors.black,
-                    descColor: Colors.black,
                     onTap: () {
                       Navigator.pushNamed(
                           context, route.crowdManagmentCustomer);

@@ -1,3 +1,5 @@
+import 'package:flutter/material.dart';
+
 import 'package:crowdless/screens/1_greeting_screen/greeting_screen.dart';
 import 'package:crowdless/screens/2_onboarding/onboarding.dart';
 import 'package:crowdless/screens/3_login/login.dart';
@@ -11,8 +13,6 @@ import 'package:crowdless/screens/merchant_screens/1_homescreen/merchant_homescr
 import 'package:crowdless/screens/merchant_screens/2_generate_qr/generate_qr.dart';
 import 'package:crowdless/screens/merchant_screens/3_view_visitors/view_visitors.dart';
 import 'package:crowdless/screens/merchant_screens/4_crowd_management/crowd_management.dart';
-
-import 'package:flutter/material.dart';
 
 // route names here
 const String greetingScreen = 'greetingScreen';

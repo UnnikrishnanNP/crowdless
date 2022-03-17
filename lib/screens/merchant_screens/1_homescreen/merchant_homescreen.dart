@@ -36,6 +36,13 @@ class _MercantHomeScreenState extends State<MercantHomeScreen> {
 
   @override
   Widget build(BuildContext context) {
+    Future? getCount() async {
+      final count =
+          await DataBaseMethods().fetchMerchantData(auth.currentUser!.uid);
+      print(count.length);
+      return count.length;
+    }
+
     final Size size = MediaQuery.of(context).size;
     return BackgroundMain(
       child: SingleChildScrollView(
@@ -77,9 +84,14 @@ class _MercantHomeScreenState extends State<MercantHomeScreen> {
                   CustomCard(
                     icon: Icons.qr_code_scanner,
                     title: 'Generate QR',
-                    description: 'Create QR Code for your shop',
+                    description: Text(
+                      'Create QR Code for your shop',
+                      style: Theme.of(context).textTheme.headline6?.copyWith(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900,
+                          ),
+                    ),
                     titleColor: Colors.black,
-                    descColor: Colors.black,
                     onTap: () {
                       Navigator.pushNamed(context, route.generateQR);
                     },
@@ -87,9 +99,26 @@ class _MercantHomeScreenState extends State<MercantHomeScreen> {
                   CustomCard(
                     icon: Icons.folder_open,
                     title: 'View Visitors',
-                    description: 'You have 10 visitors',
+                    description: FutureBuilder(
+                      builder: (BuildContext context,
+                          AsyncSnapshot<dynamic> snapshot) {
+                        if (!snapshot.hasData) {
+                          return const CircularProgressIndicator();
+                        } else {
+                          return Text(
+                            'You have ${snapshot.data.toString()} visitors',
+                            style: Theme.of(context)
+                                .textTheme
+                                .headline6
+                                ?.copyWith(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w900),
+                          );
+                        }
+                      },
+                      future: getCount(),
+                    ),
                     titleColor: Colors.black,
-                    descColor: Colors.black,
                     onTap: () {
                       Navigator.pushNamed(context, route.viewVisitors);
                     },
@@ -97,9 +126,14 @@ class _MercantHomeScreenState extends State<MercantHomeScreen> {
                   CustomCard(
                     icon: Icons.people_alt,
                     title: 'Crowd Mangament',
-                    description: 'View Crowd at your location',
+                    description: Text(
+                      'View Crowd at your location',
+                      style: Theme.of(context).textTheme.headline6?.copyWith(
+                            color: Colors.black,
+                            fontWeight: FontWeight.w900,
+                          ),
+                    ),
                     titleColor: Colors.black,
-                    descColor: Colors.black,
                     onTap: () {
                       Navigator.pushNamed(
                           context, route.crowdManagmentMerchant);
