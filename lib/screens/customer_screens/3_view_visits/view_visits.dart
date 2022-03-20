@@ -205,7 +205,7 @@ class _ViewVistsState extends State<ViewVists> {
                     .collection('customer_data')
                     .doc(userId)
                     .collection('visited')
-                    .orderBy('time')
+                    .orderBy('time', descending: true)
                     .get(),
               ),
             ),

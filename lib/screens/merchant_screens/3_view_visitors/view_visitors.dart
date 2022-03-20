@@ -205,7 +205,7 @@ class _ViewVisitorsPageState extends State<ViewVisitorsPage> {
                     .collection('merchant_data')
                     .doc(userId)
                     .collection('visitor')
-                    .orderBy('time')
+                    .orderBy('time', descending: true)
                     .get(),
               ),
             ),

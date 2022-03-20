@@ -27,7 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
   late String password;
   late String phoneNumber;
   late String user;
-  late int selectedIndex = 0;
+  late int selectedIndex = -1;
   bool isLoading = false;
 
   final auth = FirebaseAuth.instance;
@@ -147,6 +147,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: TextStyle(color: primaryLightColor),
                     ),
               press: () async {
+                FocusManager.instance.primaryFocus?.unfocus();
                 setState(() {
                   isLoading = true;
                 });
@@ -159,6 +160,9 @@ class _SignUpPageState extends State<SignUpPage> {
                     Navigator.pushNamed(context, route.customerHomePage);
                   }
                 } on FirebaseException catch (error) {
+                  setState(() {
+                    isLoading = false;
+                  });
                   if (error.code == 'weak-password') {
                     ScaffoldMessenger.of(context).showSnackBar(
                       const SnackBar(

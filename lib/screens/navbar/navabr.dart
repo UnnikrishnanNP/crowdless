@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:crowdless/constants/colors.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 import '../../../router/app_router.dart' as route;
 
@@ -109,6 +110,18 @@ class _NavBarState extends State<NavBar> {
           ),
           ListTile(
               leading: const Icon(
+                Icons.bug_report,
+                color: primaryColor,
+              ),
+              title: const Text(
+                'Found a bug?',
+                style: TextStyle(fontSize: 15),
+              ),
+              onTap: () async {
+                launch('mailto:uknp0371@gmail.com');
+              }),
+          ListTile(
+              leading: const Icon(
                 Icons.logout,
                 color: primaryColor,
               ),
@@ -122,7 +135,14 @@ class _NavBarState extends State<NavBar> {
                       await SharedPreferences.getInstance();
                   sharedPreferences.remove('email');
                   Navigator.pushReplacementNamed(context, route.loginPage);
-                  debugPrint('Logged Out');
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text(
+                          'Logged Out',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: primaryColor),
+                  );
                 });
               }),
         ],

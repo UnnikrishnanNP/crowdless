@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'package:crowdless/screens/3_login/loading_indicator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
@@ -78,13 +80,16 @@ class _LoginPageState extends State<LoginPage> {
                     style: TextStyle(color: primaryLightColor),
                   ),
             press: () async {
+              FocusManager.instance.primaryFocus?.unfocus();
               setState(() {
                 isLoading = true;
               });
               try {
                 final SharedPreferences sharedPreferences =
                     await SharedPreferences.getInstance();
-                sharedPreferences.setString('email', email);
+                if (email != null) {
+                  sharedPreferences.setString('email', email);
+                }
                 await Authentication().login(email, password);
                 var fetchedData =
                     await DataBaseMethods().queryDataFromDB('userType');
@@ -95,8 +100,40 @@ class _LoginPageState extends State<LoginPage> {
                   Navigator.pushReplacementNamed(
                       context, route.merchantHomePage);
                 }
-              } catch (error) {
+              } on FirebaseAuthException catch (error) {
+                setState(() {
+                  isLoading = false;
+                });
+
                 debugPrint(error.toString());
+                if (error.code == 'wrong-password') {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text(
+                          'Wrong Password',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: primaryColor),
+                  );
+                } else if (error.code == 'user-not-found') {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                        content: Text(
+                          'Check your email',
+                          style: TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: primaryColor),
+                  );
+                } else {
+                  ScaffoldMessenger.of(context).showSnackBar(
+                    SnackBar(
+                        content: Text(
+                          error.code.toString(),
+                          style: const TextStyle(color: Colors.white),
+                        ),
+                        backgroundColor: primaryColor),
+                  );
+                }
               }
             },
           ),
