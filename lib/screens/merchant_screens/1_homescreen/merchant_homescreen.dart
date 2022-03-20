@@ -5,7 +5,6 @@ import 'package:crowdless/constants/colors.dart';
 import 'package:crowdless/methods/database.dart';
 import 'package:crowdless/widgets/other_widgets/custom_card.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import '../../../router/app_router.dart' as route;
 import 'package:flutter/material.dart';
 import 'package:crowdless/widgets/other_widgets/background.dart';
@@ -19,7 +18,6 @@ class MercantHomeScreen extends StatefulWidget {
 
 class _MercantHomeScreenState extends State<MercantHomeScreen> {
   final auth = FirebaseAuth.instance;
-  final dbRef = FirebaseDatabase.instance.ref().child('Users');
   final userRef = FirebaseFirestore.instance.collection('users');
   Future? getData() async {
     final name = await DataBaseMethods().queryDataFromDB('name');
@@ -39,7 +37,7 @@ class _MercantHomeScreenState extends State<MercantHomeScreen> {
     Future? getCount() async {
       final count =
           await DataBaseMethods().fetchMerchantData(auth.currentUser!.uid);
-      print(count.length);
+      debugPrint(count.length.toString());
       return count.length;
     }
 

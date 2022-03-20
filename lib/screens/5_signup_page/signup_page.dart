@@ -1,6 +1,5 @@
 import 'package:crowdless/screens/3_login/loading_indicator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 
 import 'package:crowdless/constants/colors.dart';
@@ -31,7 +30,6 @@ class _SignUpPageState extends State<SignUpPage> {
   late int selectedIndex = 0;
   bool isLoading = false;
 
-  final dbref = FirebaseDatabase.instance.ref().child('Users');
   final auth = FirebaseAuth.instance;
 
   // DocumentReference<Map<String, dynamic>> users =

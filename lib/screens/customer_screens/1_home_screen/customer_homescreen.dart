@@ -34,7 +34,7 @@ class _CustomerHomeScreenState extends State<CustomerHomeScreen> {
     Future? getCount() async {
       final count =
           await DataBaseMethods().fetchCustomerData(auth.currentUser!.uid);
-      print(count.length);
+      debugPrint(count.length.toString());
       return count.length;
     }
 

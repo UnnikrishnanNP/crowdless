@@ -4,16 +4,9 @@ import 'package:flutter/material.dart';
 class ViewVisitsCard extends StatelessWidget {
   final Widget title;
   final Widget description;
-  // final Color titleColor;
-  // final Color descColor;
   final void Function()? onTap;
   const ViewVisitsCard(
-      {Key? key,
-      required this.title,
-      required this.description,
-      // required this.titleColor,
-      // required this.descColor,
-      this.onTap})
+      {Key? key, required this.title, required this.description, this.onTap})
       : super(key: key);
 
   @override
@@ -22,7 +15,7 @@ class ViewVisitsCard extends StatelessWidget {
     return Card(
       child: InkWell(
         splashColor: primaryLightColor,
-        onTap: () {},
+        onTap: onTap,
         child: SizedBox(
           height: size.height * 0.1,
           child: Stack(

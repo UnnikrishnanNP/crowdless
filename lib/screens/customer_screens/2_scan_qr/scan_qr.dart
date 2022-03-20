@@ -1,9 +1,9 @@
 // import 'package:crowdless/constants/colors.dart';
 // import 'package:crowdless/widgets/other_widgets/custom_card.dart';
 // ignore_for_file: unnecessary_null_comparison
-
 import 'dart:io';
 
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:qr_code_scanner/qr_code_scanner.dart';
 
@@ -23,7 +23,8 @@ class _ScanQRPageState extends State<ScanQRPage> {
   QRViewController? controller;
   Barcode? barcode;
   bool barocdeScanned = true;
-  DateTime time = DateTime.now();
+  String date = DateFormat("dd-MM-yyyy").format(DateTime.now());
+  String time = DateFormat("HH:mm").format(DateTime.now());
 
   @override
   void dispose() {
@@ -78,8 +79,8 @@ class _ScanQRPageState extends State<ScanQRPage> {
         barocdeScanned = true;
         if (barocdeScanned) {
           controller.pauseCamera();
-          DataBaseMethods().addMerchantScanData(barcode.code ?? "", time);
-          DataBaseMethods().addCustomerScanData(barcode.code ?? "", time);
+          DataBaseMethods().addMerchantScanData(barcode.code ?? "", date, time);
+          DataBaseMethods().addCustomerScanData(barcode.code ?? "", date, time);
           Navigator.pushReplacementNamed(context, customerHomePage);
         }
       }),

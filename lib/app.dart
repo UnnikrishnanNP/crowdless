@@ -14,7 +14,9 @@ class App extends StatelessWidget {
     );
 
     return MaterialApp(
-      theme: ThemeData(fontFamily: 'Roboto'),
+      theme: ThemeData(
+        fontFamily: 'Roboto',
+      ),
       onGenerateRoute: route.controller,
       initialRoute: route.greetingScreen,
       debugShowCheckedModeBanner: false,

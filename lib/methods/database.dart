@@ -28,33 +28,36 @@ class DataBaseMethods {
 
   // methods for scanned_data collection
   // merchant visitors list
-  Future addMerchantScanData(String uid, DateTime time) async {
+  Future addMerchantScanData(String uid, String date, String time) async {
     // cutterntUid is the current uid of customer
     final currentUid = auth.currentUser!.uid;
     // the data of currentUid is accessed in order to get uid field
     final customer = await userRef.doc(currentUid).get();
     // this uid is the uid that we get after scanning qr code
     final merchant = await userRef.doc(uid).get();
-    merchantDataRef
-        .doc(merchant['uid'])
-        .collection('visitor')
-        .add(customer.data()!);
-    print('merchant ${merchant.get("name")}');
+    Map<String, dynamic> scannedData = {
+      'date': date,
+      'time': time,
+      'data': customer.data()!
+    };
+    merchantDataRef.doc(merchant['uid']).collection('visitor').add(scannedData);
   }
 
   // customer visited list
-  Future addCustomerScanData(String uid, DateTime time) async {
+  Future addCustomerScanData(String uid, String date, String time) async {
     // cutterntUid is the current uid of customer
     final currentUid = auth.currentUser!.uid;
     // the data of currentUid is accessed in order to get uid field
     final customer = await userRef.doc(currentUid).get();
     // this uid is the uid that we get after scanning qr code
     final merchant = await userRef.doc(uid).get();
-    customerDataRef
-        .doc(customer['uid'])
-        .collection('visited')
-        .add(merchant.data()!);
-    print('merchant ${customer.get("name")}');
+    Map<String, dynamic> scannedData = {
+      'date': date,
+      'time': time,
+      'data': merchant.data()!
+    };
+
+    customerDataRef.doc(customer['uid']).collection('visited').add(scannedData);
   }
 
   // get data of customers

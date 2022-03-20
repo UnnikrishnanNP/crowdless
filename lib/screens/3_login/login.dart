@@ -1,6 +1,5 @@
 import 'package:crowdless/screens/3_login/loading_indicator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_database/firebase_database.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,7 +25,6 @@ class LoginPage extends StatefulWidget {
 
 class _LoginPageState extends State<LoginPage> {
   final auth = FirebaseAuth.instance;
-  final dbRef = FirebaseDatabase.instance.ref().child('Users');
   bool isLoading = false;
 
   // userReference userCollection =
